@@ -17,7 +17,7 @@ class main:
 	if len(path) >= 2:
             task = path[0]
             params = path[1].split(",")
-            return globals()[task](*params)
+            return json.dumps(globals()[task](*params))
         else:
             return ""
 
