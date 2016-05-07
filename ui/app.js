@@ -66,7 +66,10 @@ app.directive("barChart", ["$http", function($http){
           series: [{
             name: 'Count',
             data: values
-          }]
+          }],
+          credits: {
+            enabled: false
+          }
         });
       });
     }
@@ -91,7 +94,10 @@ app.directive("pieChart", ["$http", function($http){
           series: [{
             name: 'Count of songs',
             data: data
-          }]
+          }],
+          credits: {
+            enabled: false
+          }
         });
       });
     }
