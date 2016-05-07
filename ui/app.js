@@ -9,8 +9,9 @@ app.directive("barChart", ["$http", function($http){
     restrict: "A",
     scope: { chartDataBindTo: "=" },
     link: function(scope, elem){
-      $http.get('http://localhost:8080/aggregate/mean,tempo,year').then(function(response) {
+      $http.get('http://localhost:8080/aggregate_by_field/duration,mean,year').then(function(response) {
         var chartData = response.data;
+        chartData.splice(0,1);
         var categories = chartData.map(function(d){ return d.label });
         var values = chartData.map(function(d){ return d.value });
         
