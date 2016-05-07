@@ -14,9 +14,12 @@ class main:
 	web.header('Access-Control-Allow-Credentials', 'true')
 	
 	path = name.split("/")
-        task = path[0]
-        params = path[1].split(",")
-        return globals()[task](*params)
+	if len(path) >= 2:
+            task = path[0]
+            params = path[1].split(",")
+            return globals()[task](*params)
+        else:
+            return ""
 
 if __name__ == "__main__":
     app.run()
