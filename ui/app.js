@@ -38,3 +38,37 @@ app.directive("lineChart", ["$http", function($http){
     }
   }
 }]);
+
+app.directive("barChart", ["$http", function($http){
+  return {
+    restrict: "A",
+    link: function(scope, elem){
+      $http.get('http://localhost:8080/get_histogram/duration,30').then(function(response) {
+        var chartData = response.data;
+        var categories = chartData.map(function(d){ return Math.round(d.min) + "-" + Math.round(d.max) });
+        var values = chartData.map(function(d){ return d.count });
+        
+        elem.highcharts({
+          chart: {
+            type: 'column'
+          },
+          title: {
+            text: 'Songs Distribution By Duration'
+          },
+          xAxis: {
+            categories: categories
+          },
+          yAxis: {
+            title: {
+              text: 'Duration (seconds)'
+            }
+          },
+          series: [{
+            name: 'Count',
+            data: values
+          }]
+        });
+      });
+    }
+  }
+}]);
