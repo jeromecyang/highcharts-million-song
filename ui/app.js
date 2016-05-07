@@ -72,3 +72,28 @@ app.directive("barChart", ["$http", function($http){
     }
   }
 }]);
+
+app.directive("pieChart", ["$http", function($http){
+  return {
+    restrict: "A",
+    link: function(scope, elem){
+      $http.get('http://localhost:8080/get_unique_values_and_counts/artist_location,30').then(function(response) {
+        var chartData = response.data;
+        var data = chartData.filter(function(d){ return d.value }).map(function(d){ return { name: d.value, y: d.count } });
+        
+        elem.highcharts({
+          chart: {
+            type: 'pie'
+          },
+          title: {
+            text: 'Top 30 Song Production Locations'
+          },
+          series: [{
+            name: 'Count of songs',
+            data: data
+          }]
+        });
+      });
+    }
+  }
+}]);
