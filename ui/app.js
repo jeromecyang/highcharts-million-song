@@ -103,3 +103,43 @@ app.directive("pieChart", ["$http", function($http){
     }
   }
 }]);
+
+app.directive("scatterPlot", ["$http", function($http){
+  return {
+    restrict: "A",
+    link: function(scope, elem){
+      $http.get('http://localhost:8080/get_top_n_sorted_by_field/song_hotttnesss,100').then(function(response) {
+        var chartData = response.data;
+        var data = chartData.slice(0,100).map(function(song){ return [song.loudness, song.tempo] });
+        var data1 = chartData.slice(100,200).map(function(song){ return [song.loudness, song.tempo] });
+        
+        elem.highcharts({
+          chart: {
+            type: 'scatter',
+            zoomType: 'xy'
+          },
+          title: {
+            text: 'Loudness & Tempo Of The 100 Hottest Songs'
+          },
+          xAxis: {
+            title: {
+              text: 'Loudness'
+            }
+          },
+          yAxis: {
+            title: {
+              text: 'Tempo'
+            }
+          },
+          series: [{
+            name: 'Hot Song',
+            data: data
+          }],
+          credits: {
+            enabled: false
+          }
+        });
+      });
+    }
+  }
+}]);
