@@ -30,6 +30,10 @@ app.directive("lineChart", ["$http", function($http){
             name: 'Tempo',
             data: values
           }],
+          tooltip: {
+            headerFormat: '<span style="font-size: 10px">Year: {point.key}</span><br/>',
+            pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y:.2f}</b><br/>'
+          },
           credits: {
             enabled: false
           }
@@ -67,6 +71,10 @@ app.directive("barChart", ["$http", function($http){
             name: 'Count',
             data: values
           }],
+          tooltip: {
+            headerFormat: '<span style="font-size: 10px">Duration: {point.key} seconds</span><br/>',
+            pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y:,.0f}</b><br/>'
+          },
           credits: {
             enabled: false
           }
