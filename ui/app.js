@@ -120,8 +120,11 @@ app.directive("scatterPlot", ["$http", function($http){
     link: function(scope, elem){
       $http.get('http://localhost:8080/get_top_n_sorted_by_field/song_hotttnesss,100').then(function(response) {
         var chartData = response.data;
-        var data = chartData.slice(0,100).map(function(song){ return [song.loudness, song.tempo] });
-        var data1 = chartData.slice(100,200).map(function(song){ return [song.loudness, song.tempo] });
+        var data = chartData;
+        data.forEach(function(song){
+          song.x = song.loudness;
+          song.y = song.tempo;
+        });
         
         elem.highcharts({
           chart: {
@@ -145,6 +148,18 @@ app.directive("scatterPlot", ["$http", function($http){
             name: 'Hot Song',
             data: data
           }],
+          tooltip: {
+            headerFormat: '',
+            pointFormatter: function(){
+              var song = this;
+              return "<b>" + song.title + "</b><br><i>" + song.artist_name + ", " + song.year + "</i>"
+                + "<br>-<br>Duration: " + Math.round(song.duration)
+                + "<br>Tempo: " + Math.round(song.tempo)
+                + "<br>Loudness: " + song.loudness
+                + "<br>Hotttnesss: " + Math.round(song.song_hotttnesss*1000)/1000;
+            }
+          },
+          colors: ['#45a9a8'],
           credits: {
             enabled: false
           }
