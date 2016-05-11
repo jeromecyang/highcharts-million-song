@@ -201,7 +201,10 @@ app.directive("highMap", ["$http", function($http){
           }, {
             type: 'mappoint',
             data: data
-          }]
+          }],
+          credits: {
+            enabled: false
+          }
         });
       });
     }
