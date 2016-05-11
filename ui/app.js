@@ -168,3 +168,42 @@ app.directive("scatterPlot", ["$http", function($http){
     }
   }
 }]);
+
+app.directive("highMap", ["$http", function($http){
+  return {  
+    restrict: "A",
+    link: function(scope, elem){
+      $http.get('http://localhost:8080/get_top_n_sorted_by_field/song_hotttnesss,200').then(function(response) {
+        var chartData = response.data;
+        var data = chartData.filter(function(song){ return song.artist_longitude && song.artist_latitude });
+        data.forEach(function(song){
+          song.lon = song.artist_longitude;
+          song.lat = song.artist_latitude;
+        });
+        
+        elem.highcharts('Map', {
+          title: {
+            text: 'Artist Locations Of The Top 200 Hottest Songs'
+          },
+          tooltip: {
+            headerFormat: '',
+            pointFormat: "<b>{point.title}</b><br>{point.artist_name}, {point.year}<br>{point.artist_location}"
+                + "<br>-<br>Duration: {point.duration:,.0f}"
+                + "<br>Tempo: {point.tempo:,.0f}"
+                + "<br>Loudness: {point.loudness}"
+                + "<br>Hotttnesss: {point.song_hotttnesss:,.3f}"
+          },
+          legend: {
+            enabled: false
+          },
+          series: [{
+            mapData: Highcharts.maps['custom/world']
+          }, {
+            type: 'mappoint',
+            data: data
+          }]
+        });
+      });
+    }
+  }
+}]);
